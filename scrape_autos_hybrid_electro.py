@@ -3,19 +3,20 @@ import requests
 import pandas as pd
 from datetime import datetime
 
-
 start_page = 1
-end_page = 120
-auto_list = []
+autos_list= []
+current_datetime = datetime.now().strftime("%Y-%m-%d")
 
-for page in range (start_page, end_page+ 1):
+while True: 
     # 2 Kraftstoffe (Hybrid, Elektro), Türen 4/5, Limousine
-    URL = f"https://www.12gebrauchtwagen.de/suchen?page={page}&s%5Bdoors%5D%5B%5D=4-5&s%5Bfuel%5D%5B%5D=7&s%5Bfuel%5D%5B%5D=6&s%5Bt%5D=3"
+    URL = f"https://www.12gebrauchtwagen.de/suchen?page={start_page}&s%5Bdoors%5D%5B%5D=4-5&s%5Bfuel%5D%5B%5D=7&s%5Bfuel%5D%5B%5D=6&s%5Bt%5D=3"
     response = requests.get(URL, headers={"Accept-Language": "de-DE"})
     soup = BeautifulSoup(response.content, 'lxml')
 
     autos = soup.select('a[class*="car-make-"]')
 
+    if not autos: 
+        break
 
     for item in autos:
         title_elem = item.find('h3')
@@ -38,9 +39,9 @@ for page in range (start_page, end_page+ 1):
             "gefunden": gefunden_elem.text if gefunden_elem else None
         }
 
-        auto_list.append(data)
+        autos_list.append(data)
+    start_page += 1
 
 # Create a DataFrame from the collected data
-df = pd.DataFrame(auto_list)
-current_datetime = datetime.now().strftime("%Y-%m-%d")
+df = pd.DataFrame(autos_list)
 df.to_csv(f'autos_hybrid_electro_price_Stand_{current_datetime}.csv')
