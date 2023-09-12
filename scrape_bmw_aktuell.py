@@ -2,23 +2,20 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 from datetime import datetime
+import os
 
-start_page = 1
-autos_list = []
-current_datetime = datetime.now().strftime("%Y-%m-%d")
-
-while True: 
-    # BMW, 3er, Benzin, EZ von 2016, von 74 kW (101 PS), bis 110 kW (150 PS), Türen 4/5, Manuell, Limousine
-    URL = "https://www.12gebrauchtwagen.de/suchen?utf8=%E2%9C%93&s%5Bsort%5D=6&s%5Bmk%5D=11&s%5Bmd%5D=108&s%5By_min%5D=2016&s%5By_max%5D=&s%5Bm_min%5D=&s%5Bm_max%5D=&s%5Bprice_or_rate%5D=price&s%5Bpr_min%5D=&s%5Bpr_max%5D=&s%5Brate_from%5D=&s%5Brate_to%5D=&s%5Bzip%5D=&s%5Bt%5D=3&s%5Bfuel%5D%5B%5D=2&s%5Bg%5D=m&s%5Bpw_min%5D=74&s%5Bpw_max%5D=110&s%5Bsince%5D=&s%5Bprovider_id%5D%5B%5D=4&s%5Bprovider_id%5D%5B%5D=68&s%5Bprovider_id%5D%5B%5D=26&s%5Bprovider_id%5D%5B%5D=16&s%5Bprovider_id%5D%5B%5D=34&s%5Bprovider_id%5D%5B%5D=35&s%5Bprovider_id%5D%5B%5D=28&s%5Bprovider_id%5D%5B%5D=27&s%5Bprovider_id%5D%5B%5D=2&s%5Bdoors%5D%5B%5D=4-5&s%5Bcu%5D="
+def scrape_data(page):
+    URL = f"https://www.12gebrauchtwagen.de/suchen?page={page}&utf8=%E2%9C%93&s%5Bsort%5D=6&s%5Bmk%5D=11&s%5Bmd%5D=108&s%5By_min%5D=2016&s%5By_max%5D=&s%5Bm_min%5D=&s%5Bm_max%5D=&s%5Bprice_or_rate%5D=price&s%5Bpr_min%5D=&s%5Bpr_max%5D=&s%5Brate_from%5D=&s%5Brate_to%5D=&s%5Bzip%5D=&s%5Bt%5D=3&s%5Bfuel%5D%5B%5D=2&s%5Bg%5D=m&s%5Bpw_min%5D=74&s%5Bpw_max%5D=110&s%5Bsince%5D=&s%5Bprovider_id%5D%5B%5D=4&s%5Bprovider_id%5D%5B%5D=68&s%5Bprovider_id%5D%5B%5D=26&s%5Bprovider_id%5D%5B%5D=16&s%5Bprovider_id%5D%5B%5D=34&s%5Bprovider_id%5D%5B%5D=35&s%5Bprovider_id%5D%5B%5D=28&s%5Bprovider_id%5D%5B%5D=27&s%5Bprovider_id%5D%5B%5D=2&s%5Bdoors%5D%5B%5D=4-5&s%5Bcu%5D="
 
     response = requests.get(URL, headers={"Accept-Language": "de-DE"})
     soup = BeautifulSoup(response.content, 'lxml')
 
     autos = soup.select('a[class*="car-make-bmw"]')
     
-    if not autos: 
-        break
-    
+    return autos
+
+def extract_data(autos):
+    autos_list = []
     for item in autos:
         title_elem = item.find('h3')
         price_elem = item.find('span', class_="ad-price")
@@ -41,8 +38,33 @@ while True:
         }
 
         autos_list.append(data)
-    start_page += 1
+        
+    return autos_list
+
+def save_to_csv(df):
+    data_folder = "data"
+    os.makedirs(data_folder, exist_ok=True)
+    current_datetime = datetime.now().strftime("%Y-%m-%d")
+    csv_filename = f'bmw_aktuell_Stand_{current_datetime}.csv'
+    csv_filepath = os.path.join(data_folder, csv_filename)
+    df.to_csv(csv_filepath, index=False)
     
-# Create a DataFrame from the collected data
-df = pd.DataFrame(autos_list)
-df.to_csv(f'bmw_aktuell_price_Stand_{current_datetime}.csv')
+def main():
+    start_page = 1
+    autos_list = []
+
+    while True:
+        autos = scrape_data(start_page)
+        
+        if not autos:
+            break
+        
+        autos_data = extract_data(autos)
+        autos_list.extend(autos_data)
+        start_page += 1
+
+    df = pd.DataFrame(autos_list)
+    save_to_csv(df)
+
+if __name__ == "__main__":
+    main()
