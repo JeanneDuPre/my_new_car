@@ -2,23 +2,20 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 from datetime import datetime
+import os
 
-start_page = 1
-autos_list = []
-current_datetime = datetime.now().strftime("%Y-%m-%d")
-
-while True:
-    # BMW, 3er, 2 Kraftstoffe (Hybrid, Elektro), Türen 4/5, Limousine
-    URL = f"https://www.12gebrauchtwagen.de/suchen?page={start_page}&s%5Bdoors%5D%5B%5D=4-5&s%5Bfuel%5D%5B%5D=7&s%5Bfuel%5D%5B%5D=6&s%5Bmd%5D=108&s%5Bmk%5D=11&s%5Bt%5D=3"
+def scrape_data(page):
+    URL = f"https://www.12gebrauchtwagen.de/suchen?page={page}&s%5Bdoors%5D%5B%5D=4-5&s%5Bfuel%5D%5B%5D=7&s%5Bfuel%5D%5B%5D=6&s%5Bmd%5D=108&s%5Bmk%5D=11&s%5Bt%5D=3"
 
     response = requests.get(URL, headers={"Accept-Language": "de-DE"})
     soup = BeautifulSoup(response.content, 'lxml')
 
     autos = soup.select('a[class*="car-make-bmw"]')
+    
+    return autos
 
-    if not autos:
-        break  # No more results, exit the loop
-
+def extract_data(autos):
+    autos_list = []
     for item in autos:
         title_elem = item.find('h3')
         price_elem = item.find('span', class_="ad-price")
@@ -41,9 +38,33 @@ while True:
         }
 
         autos_list.append(data)
+        
+    return autos_list
 
-    start_page += 1
+def save_to_csv(df):
+    data_folder = "data"
+    os.makedirs(data_folder, exist_ok=True)
+    current_datetime = datetime.now().strftime("%Y-%m-%d")
+    csv_filename = f'bmw_hybrid_electro_Stand_{current_datetime}.csv'
+    csv_filepath = os.path.join(data_folder, csv_filename)
+    df.to_csv(csv_filepath, index=False)
+    
+def main():
+    start_page = 1
+    autos_list = []
 
-# Create a DataFrame from the collected data
-df = pd.DataFrame(autos_list)
-df.to_csv(f'bmw_hybrid_electro_price2_Stand_{current_datetime}.csv')
+    while True:
+        autos = scrape_data(start_page)
+        
+        if not autos:
+            break
+        
+        autos_data = extract_data(autos)
+        autos_list.extend(autos_data)
+        start_page += 1
+
+    df = pd.DataFrame(autos_list)
+    save_to_csv(df)
+
+if __name__ == "__main__":
+    main()
