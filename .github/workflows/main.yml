@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  scrape:
+  scrape_bmw_aktuell:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -14,7 +14,7 @@ jobs:
       with:
         python-version: '3.9'
     - run: pip install requests bs4 pandas datetime
-    - name: Run scraper
+    - name: Run scraper for BMW aktuell
       run: python scrape_bmw_aktuell.py
     - name: Add and commit	
       run: |-	
@@ -22,6 +22,46 @@ jobs:
         git config user.name "Automated"	
         git config user.email "actions@users.noreply.github.com"	
         timestamp=$(date -u)
-        git commit -m "Latest data: ${timestamp}" || exit 0 	
+        git commit -m "Latest data from BMW aktuell: ${timestamp}" || exit 0 	
+    - name: Push	
+      run: git push
+
+  scrape_autos_hybrid_electro:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v3
+      with:
+        python-version: '3.9'
+    - run: pip install requests bs4 pandas datetime
+    - name: Run scraper for Autos Hybrid Electro
+      run: python scrape_autos_hybrid_electro.py
+    - name: Add and commit	
+      run: |-	
+        git add .	
+        git config user.name "Automated"	
+        git config user.email "actions@users.noreply.github.com"	
+        timestamp=$(date -u)
+        git commit -m "Latest data from Autos Hybrid Electro: ${timestamp}" || exit 0 	
+    - name: Push	
+      run: git push
+
+  scrape_bmw_hybrid_electro:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v3
+      with:
+        python-version: '3.9'
+    - run: pip install requests bs4 pandas datetime
+    - name: Run scraper for BMW Hybrid Electro
+      run: python scrape_bmw_hybrid_electro.py
+    - name: Add and commit	
+      run: |-	
+        git add .	
+        git config user.name "Automated"	
+        git config user.email "actions@users.noreply.github.com"	
+        timestamp=$(date -u)
+        git commit -m "Latest data from BMW Hybrid Electro: ${timestamp}" || exit 0 	
     - name: Push	
       run: git push
