@@ -7,7 +7,7 @@ import os
 def fetch_autos_data(page):
     URL = f"https://www.12gebrauchtwagen.de/suchen?page={page}&s%5Bdoors%5D%5B%5D=4-5&s%5Bfuel%5D%5B%5D=7&s%5Bfuel%5D%5B%5D=6&s%5Bt%5D=3"
     response = requests.get(URL, headers={"Accept-Language": "de-DE"})
-    soup = BeautifulSoup(response.content, 'lxml')
+    soup = BeautifulSoup(response.content, 'html.parser')
     autos = soup.select('a[class*="car-make-"]')
     return autos
 
