@@ -2,7 +2,7 @@ name: Scrape BMW hybrid electro
 
 on:
   schedule:
-    - cron: "0 8 * * 3" # 8 a.m. every Wednesday 
+    - cron: "0 19 * * *" # every day at 19:00
   workflow_dispatch:
 
 jobs:
