@@ -2,7 +2,7 @@ name: Scrape Autos hybrid electro
 
 on:
   schedule:
-    - cron: "0 8 * * 3" # 8 a.m. every Wednesday 
+    - cron: "0 18 * * *" # every day at 18:00
   workflow_dispatch:
 
 jobs:
