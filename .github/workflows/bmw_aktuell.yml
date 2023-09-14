@@ -2,7 +2,7 @@ name: Scrape BMW aktuell
 
 on:
   schedule:
-    - cron: "0 8 * * 3" # 8 a.m. every Wednesday 
+    - cron: "30 18 * * *" # every day at 18:30
   workflow_dispatch:
 
 jobs:
