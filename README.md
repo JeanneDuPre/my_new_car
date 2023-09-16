@@ -1,6 +1,6 @@
 # my_new_car
 [![Scrape BMW hybrid electro](https://github.com/JeanneDuPre/my_new_car/actions/workflows/bmw_hybrid_electro.yml/badge.svg)](https://github.com/JeanneDuPre/my_new_car/actions/workflows/bmw_hybrid_electro.yml)
-
+[![Scrape BMW aktuell](https://github.com/JeanneDuPre/my_new_car/actions/workflows/bmw_aktuell.yml/badge.svg)](https://github.com/JeanneDuPre/my_new_car/actions/workflows/bmw_aktuell.yml)
 
 <br>Test
 - Skills: Scraping, Prefect for workflow, store in S3, streamlit, deploy Heroku
