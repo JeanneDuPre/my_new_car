@@ -42,7 +42,7 @@ def extract_data(autos):
     return autos_list
 
 def save_to_csv(df):
-    data_folder = "data"
+    data_folder = "data/raw"
     os.makedirs(data_folder, exist_ok=True)
     current_datetime = datetime.now().strftime("%Y-%m-%d")
     csv_filename = f'bmw_hybrid_electro_Stand_{current_datetime}.csv'
