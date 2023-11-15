@@ -34,7 +34,7 @@ def extract_auto_data(item):
     return data
 
 def save_to_csv(df):
-    data_folder = "data"
+    data_folder = "data/raw"
     os.makedirs(data_folder, exist_ok=True)
     current_datetime = datetime.now().strftime("%Y-%m-%d")
     csv_filename = f'autos_hybrid_electro_price_Stand_{current_datetime}.csv'
