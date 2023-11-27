@@ -1,0 +1,27 @@
+name: Scrape Autos alle
+
+on:
+  schedule:
+    - cron: "0 18 * * *" # every day at 18:00
+  workflow_dispatch:
+
+jobs:
+  scrape_autos_hybrid_electro:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v3
+      with:
+        python-version: '3.9'
+    - run: pip install requests bs4 pandas datetime
+    - name: Run scraper for Autos Hybrid Electro
+      run: python scrape_autos_alle.py
+    - name: Add and commit	
+      run: |-	
+        git add .	
+        git config user.name "Automated"	
+        git config user.email "actions@users.noreply.github.com"	
+        timestamp=$(date -u)
+        git commit -m "Latest data from Autos Hybrid Electro: ${timestamp}" || exit 0 	
+    - name: Push	
+      run: git push
