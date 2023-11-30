@@ -2,7 +2,7 @@ name: Scrape Autos alle
 
 on:
   schedule:
-    - cron: "0 18 * * *" # every day at 18:00
+    - cron: "30 19 * * *" # every day at 19:30
   workflow_dispatch:
 
 jobs:
