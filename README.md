@@ -18,7 +18,8 @@
 2.4. Checking Correlation 
 2.5. 
 ### 3. Visualization
-![alt text](https://github.com/JeanneDuPre/my_new_car/blob/main/images/BMW_vs_TESLA.pdf)
+[Overview](https://github.com/JeanneDuPre/my_new_car/blob/main/images/BMW_vs_TESLA.pdf)
+
 
 
 ### 4. Model (Price Prediction)
