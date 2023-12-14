@@ -18,10 +18,8 @@
 2.4. Checking Correlation 
 2.5. 
 ### 3. Visualization
-## pie chart brand
-## line chart price and mileage
-## line chart price and year
-## Comparison of electric cars and gasoline cars (BMW | Tesla)
+![alt text](https://github.com/JeanneDuPre/my_new_car/blob/main/images/BMW_vs_TESLA.pdf)
+
 
 ### 4. Model (Price Prediction)
 4.1. LinearRegression from sklearn
