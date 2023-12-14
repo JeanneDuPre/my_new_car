@@ -18,8 +18,8 @@
 2.4. Checking Correlation 
 2.5. 
 ### 3. Visualization
-[Overview](https://github.com/JeanneDuPre/my_new_car/blob/main/images/BMW_vs_TESLA.pdf)
-[Marken Elektro vs. Benziner](https://github.com/JeanneDuPre/my_new_car/blob/main/images/marken_elektro_benzin.pdf)
+#### [Overview](https://github.com/JeanneDuPre/my_new_car/blob/main/images/BMW_vs_TESLA.pdf)
+#### [Marken Elektro vs. Benziner](https://github.com/JeanneDuPre/my_new_car/blob/main/images/marken_elektro_benzin.pdf)
 
 
 
